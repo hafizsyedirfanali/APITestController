@@ -2,6 +2,7 @@ using ClientSide.Models;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using System.Diagnostics;
+using System.Text;
 
 namespace ClientSide.Controllers
 {
@@ -100,11 +101,38 @@ namespace ClientSide.Controllers
             var result = JsonConvert.DeserializeObject<ResponseModel<List<int>>>(responseString); 
             return Ok(result);
         }
+        public async Task<IActionResult> GetNormalizedStudent()
+        {
+            using HttpClient client = new HttpClient();
+            client.DefaultRequestHeaders.Add("Action","1");
+            client.BaseAddress = new Uri(baseAddress);
+            var studentObject = new Student() { Id = 1, Name = "Irfan", Description = "Test Description" };
+            var studentSerializedString = JsonConvert.SerializeObject(studentObject);
+            string urlEncodedJson = Uri.EscapeDataString(studentSerializedString);
+            var response = await client.GetAsync($"api/actions/GetNormalizedStudent?student={urlEncodedJson}");
+            response.EnsureSuccessStatusCode();
+            var responseString = await response.Content.ReadAsStringAsync();
+            var result = JsonConvert.DeserializeObject<ResponseModel<Student>>(responseString);
+            return Ok(result);
+        }
+        #endregion
+
+        #region POST ACTIONS
+        public async Task<IActionResult> PostNumber()
+        {
+            using HttpClient client = new HttpClient();
+            client.BaseAddress = new Uri(baseAddress);
+            var numberSerialized = JsonConvert.SerializeObject(101);
+            var content = new StringContent(numberSerialized, Encoding.UTF8, "application/json");
+            var response = await client.PostAsync("api/actions/SaveNumber", content);
+            response.EnsureSuccessStatusCode();
+            var responseString = await response.Content.ReadAsStringAsync();
+            var result = JsonConvert.DeserializeObject<ResponseModel<int>>(responseString);
+            return Ok(result);
+        }
 
 
         #endregion
-
-
 
 
 

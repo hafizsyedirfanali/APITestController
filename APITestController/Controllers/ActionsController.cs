@@ -61,9 +61,23 @@ namespace APITestController.Controllers
             return Ok(new {value = ordered });
         }
 
+        [HttpGet]
+        [Route("GetNormalizedStudent")]
+        public IActionResult GetNormalizedStudent([FromQuery] string student, [FromHeader] string action)
+        {
+            var studentObject = JsonConvert.DeserializeObject<Student>(student);
+            if(studentObject == null) { return BadRequest(); }
+            studentObject.Name = action == "1"? studentObject.Name.ToUpper() : studentObject.Name.ToLower();
+            studentObject.Description = action == "1" ? studentObject.Description.ToUpper() : studentObject.Name.ToLower();
+            return Ok(new {  value = studentObject});
+        }
 
-
-
+        [HttpPost]
+        [Route("SaveNumber")]
+        public IActionResult SaveNumber([FromBody] int number)
+        {
+            return Ok(new { value = number });
+        }
 
 
 
