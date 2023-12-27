@@ -75,7 +75,34 @@ namespace ClientSide.Controllers
         }
         #endregion
 
+        #region GET ACTIONS with parameters
+        public async Task<IActionResult> GetNextNumber()
+        {
+            using HttpClient client = new HttpClient();
+            client.BaseAddress = new Uri(baseAddress);
+            var response = await client.GetAsync($"api/actions/GetNextNumber?number={10}");
+            response.EnsureSuccessStatusCode();
+            var responseString = await response.Content.ReadAsStringAsync();
+            var result = JsonConvert.DeserializeObject<ResponseModel<int>> (responseString);
+            return Ok(result);
+        }
 
+        public async Task<IActionResult> GetSortedList()
+        {
+            using HttpClient client = new HttpClient();
+            client.BaseAddress = new Uri(baseAddress);
+            List<int> numbers = new List<int>() { 6,5,8,4,6,5,7,2,1,5};
+            string numberString = JsonConvert.SerializeObject(numbers);
+            string urlEncodedJson = Uri.EscapeDataString(numberString);
+            var response = await client.GetAsync($"api/actions/GetSortedList?numbers={urlEncodedJson}");
+            response.EnsureSuccessStatusCode();
+            var responseString = await response.Content.ReadAsStringAsync();
+            var result = JsonConvert.DeserializeObject<ResponseModel<List<int>>>(responseString); 
+            return Ok(result);
+        }
+
+
+        #endregion
 
 
 

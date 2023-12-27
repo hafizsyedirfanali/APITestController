@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
+using System.Text.Json.Serialization;
 
 namespace APITestController.Controllers
 {
@@ -43,7 +45,21 @@ namespace APITestController.Controllers
             return Ok(new {value = list});
         }
 
+        [HttpGet]
+        [Route("GetNextNumber")]
+        public IActionResult GetNextNumber(int number)
+        {
+            return Ok(new {value = number+1});
+        }
 
+        [HttpGet]
+        [Route("GetSortedList")]
+        public IActionResult GetSortedList([FromQuery] string numbers)
+        {
+            var list = JsonConvert.DeserializeObject<List<int>>(numbers);
+            var ordered = list.OrderBy(s=>s).ToList();
+            return Ok(new {value = ordered });
+        }
 
 
 
