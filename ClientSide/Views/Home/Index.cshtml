@@ -1,0 +1,25 @@
+﻿@model List<WeatherClass>
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+@if (Model is not null && Model.Any())
+{
+    <table class="table table-bordered">
+        <tr>
+            <th>Date</th>
+            <th>Temp C</th>
+            <th>Temp F</th>
+            <th>Summary</th>
+        </tr>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.date</td>
+                <td>@item.temperatureC</td>
+                <td>@item.temperatureF</td>
+                <td>@item.summary</td>
+            </tr>
+        }
+    </table>
+}
