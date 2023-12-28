@@ -131,7 +131,21 @@ namespace ClientSide.Controllers
             return Ok(result);
         }
 
+        public async Task<IActionResult> SaveNumberList()
+        {
+            using HttpClient client = new HttpClient();
+            client.BaseAddress = new Uri(baseAddress);
+            var numberList = new List<int>() { 1, 3, 2 };
+            var serializedNumberList = JsonConvert.SerializeObject(numberList);
+            //var urlEncodedNumberList = Uri.EscapeDataString(serializedNumberList);
+            var content = new StringContent(serializedNumberList, Encoding.UTF8, "application/json");
+            var response = await client.PostAsync("api/actions/SaveNumberList", content);
+            response.EnsureSuccessStatusCode();
+            var responseString = await response.Content.ReadAsStringAsync();
+            var result = JsonConvert.DeserializeObject<ResponseModel<List<int>>>(responseString);
+            return Ok(result);
 
+        }
         #endregion
 
 

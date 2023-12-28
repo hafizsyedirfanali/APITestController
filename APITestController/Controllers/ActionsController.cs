@@ -79,6 +79,12 @@ namespace APITestController.Controllers
             return Ok(new { value = number });
         }
 
+        [HttpPost]
+        [Route("SaveNumberList")]
+        public IActionResult SaveNumberList([FromBody] List<int> numbers)
+        {
+            return Ok(new {value = numbers});
+        }
 
 
 
