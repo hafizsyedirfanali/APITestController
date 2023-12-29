@@ -99,6 +99,13 @@ namespace APITestController.Controllers
             return Ok(new {value = students});
         }
 
+        [HttpDelete]
+        [Route("DeleteStudent")]
+        public IActionResult DeleteStudent([FromQuery] int id)
+        {
+            return Ok(new {value = id});
+        }
+
 
         private Student GetStudentObject()
         {

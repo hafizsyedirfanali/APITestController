@@ -187,6 +187,19 @@ namespace ClientSide.Controllers
 
         #endregion
 
+        #region DELETE ACTION
+        public async Task<IActionResult> DeleteStudent()
+        {
+            using HttpClient client = new HttpClient();
+            client.BaseAddress = new Uri(baseAddress);
+            var response = await client.DeleteAsync("api/actions/DeleteStudent?id=101");
+            response.EnsureSuccessStatusCode();
+            var responseString = await response.Content.ReadAsStringAsync();
+            var result = JsonConvert.DeserializeObject<ResponseModel<int>>(responseString);
+            return Ok(result);
+        }
+
+        #endregion
 
 
 
