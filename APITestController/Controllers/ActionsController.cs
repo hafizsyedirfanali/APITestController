@@ -86,7 +86,18 @@ namespace APITestController.Controllers
             return Ok(new {value = numbers});
         }
 
-
+        [HttpPost]
+        [Route("SaveObject")]
+        public IActionResult SaveObject([FromBody] Student student)
+        {
+            return Ok(new {value = student});
+        }
+        [HttpPost]
+        [Route("SaveObjectList")]
+        public IActionResult SaveObjectList([FromBody] List<Student> students)
+        {
+            return Ok(new {value = students});
+        }
 
 
         private Student GetStudentObject()

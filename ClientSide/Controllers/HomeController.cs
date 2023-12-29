@@ -136,16 +136,55 @@ namespace ClientSide.Controllers
             using HttpClient client = new HttpClient();
             client.BaseAddress = new Uri(baseAddress);
             var numberList = new List<int>() { 1, 3, 2 };
-            var serializedNumberList = JsonConvert.SerializeObject(numberList);
-            //var urlEncodedNumberList = Uri.EscapeDataString(serializedNumberList);
+            var serializedNumberList = JsonConvert.SerializeObject(numberList);            
             var content = new StringContent(serializedNumberList, Encoding.UTF8, "application/json");
             var response = await client.PostAsync("api/actions/SaveNumberList", content);
             response.EnsureSuccessStatusCode();
             var responseString = await response.Content.ReadAsStringAsync();
             var result = JsonConvert.DeserializeObject<ResponseModel<List<int>>>(responseString);
             return Ok(result);
-
         }
+
+        public async Task<IActionResult> SaveObject()
+        {
+            using HttpClient client = new HttpClient();
+            client.BaseAddress = new Uri(baseAddress);
+            var studentObject = new Student()
+            {
+                Id = 1,
+                Name = "Irfan",
+                Description = "Test description"
+            };
+            var serializedObject = JsonConvert.SerializeObject(studentObject);
+            var content = new StringContent(serializedObject,Encoding.UTF8,"application/json");
+            var response = await client.PostAsync("api/actions/saveobject", content);
+            response.EnsureSuccessStatusCode();
+            var responseString = await response.Content.ReadAsStringAsync();
+            var studentDeserialized = JsonConvert.DeserializeObject<ResponseModel<Student>>(responseString);
+            return Ok(studentDeserialized);
+        }
+
+        public async Task<IActionResult> SaveObjectList()
+        {
+            using HttpClient client = new HttpClient();
+            client.BaseAddress = new Uri(baseAddress);
+            var studentObject = new Student()
+            {
+                Id = 1,
+                Name = "Irfan",
+                Description = "Test description"
+            };
+            var objectList = new List<Student>() { studentObject, studentObject, studentObject, studentObject };
+            var serializedObject = JsonConvert.SerializeObject(objectList);
+            var content = new StringContent(serializedObject, Encoding.UTF8, "application/json");
+            var response = await client.PostAsync("api/actions/saveobjectlist", content);
+            response.EnsureSuccessStatusCode();
+            var responseString = await response.Content.ReadAsStringAsync();
+            var studentDeserialized = JsonConvert.DeserializeObject<ResponseModel<List<Student>>>(responseString);
+            return Ok(studentDeserialized);
+        }
+
+
         #endregion
 
 
